@@ -1,0 +1,42 @@
+AVISPA Tool: EXAMPLES
+=====================
+
+Examples of AVISPA command lines:
+
+Ex.1: some possible ways to analyse the ISO1 problem are:
+
+      avispa testsuite/hlpsl/ISO1.hlpsl --nowarnings --cl-atse
+      avispa testsuite/hlpsl/ISO1.hlpsl --typed_model=no --cl-atse
+
+Ex.2: some possible ways to analyse the IKEv2-DSx problem are:
+
+      avispa testsuite/hlpsl/IKEv2-DS.hlpsl --ofmc
+      avispa testsuite/hlpsl/IKEv2-DS.hlpsl --typed_model=no --ofmc
+
+Ex.3: a possible way to analyse the ISO2 problem is:
+
+      avispa testsuite/hlpsl/CHAPv2.hlpsl --ta4sp
+
+Ex.4: some possible ways to analyse the ISO3 problem are:
+
+      avispa testsuite/hlpsl/ISO3.hlpsl --nowarnings --satmc
+      avispa testsuite/hlpsl/ISO3.hlpsl --nowarnings --satmc --solver=sim
+
+Ex.5: generating the IF specification of EKE2.hlpsl without analysing it:
+
+      avispa testsuite/hlpsl/EKE2.hlpsl
+        or: avispa testsuite/hlpsl/EKE2.hlpsl --hlpsl2if
+      less testsuite/results/EKE2.if
+
+Ex.6: using hlpsl2latex to produce a PDF version of EKE.hlpsl:
+
+      cd testsuite
+      hlpsl2latex -standalone hlpsl/EKE.hlpsl >pdf/EKE.tex
+      cd pdf
+      pdflatex EKE.tex
+      acroread EKE.pdf
+
+Ex.7: checking the executability of EKE.hlpsl:
+
+      avispa testsuite/hlpsl/EKE.hlpsl --cl-atse -noexec
+      avispa testsuite/hlpsl/EKE.hlpsl --ofmc -sessco

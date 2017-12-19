@@ -1,0 +1,194 @@
+SATMC: README
+=============
+
+SATMC (SAT-based Model Checker) is an open and flexible platform for
+model-checking security protocols via reduction to SAT.  SATMC builds
+a propositional formula encoding a bounded unrolling of the transition
+relation specified by either the IF or SATE specification, the initial
+state and the set of states representing a violation of the security
+properties.  (The SAT compilation of IF specifications results from
+the combination of a reduction of security problems to planning
+problems---expressed in the SATE language---and SAT-encoding
+techniques developed for planning.)  The propositional formula is then
+fed to a state-of-the-art SAT solver and any model found is translated
+back into an attack.
+
+SATMC is currently interfaced with the sat solvers zchaff (you can get
+it at the URL http://www.ee.princeton.edu/~chaff/zchaff.html), mChaff
+(you can get it at the URL
+http://www.ee.princeton.edu/~chaff/mchaff.html), SIM (you can get it
+at http://www.star.dist.unige.it/~sim/sim. Note that the version of
+the interfaced SIM has been modified by its staff for returning the
+assignment relative to the propositional formula.)  and SATO v3.0 (you
+can get it at http://www.cs.uiowa.edu/~hzhang/sato).
+
+
+===========
+0. CONTENTS
+===========
+ 1. Running
+ 2. Mailing list
+ 3. Authors, contributors, and contact
+
+
+==========
+1. RUNNING
+==========
+
+You can execute SATMC to issue at the shell prompt:
+
+  "satmc OPTION"
+  "satmc FILE [OPTIONS]" 
+
+where:
+
+* OPTION:
+  -h,  --help       display this help and exit.
+  -v,  --version    output version information and exit.
+
+* OPTIONS:
+
+  --solver=SOLVER		: SOLVER is the selected state-of-the-art 
+				  SAT solver you want to use to
+				  evaluate the satisfiability of the
+				  generated propositional formula.
+				  Accepted value are:
+	                            'chaff'    : zChaff  solver selected;
+	                            'mchaff'   : mChaff  solver selected;
+		                    'sim'      : SIM solver selected; 
+		                    'sato'     : SATO solver selected.
+				  Default value of SOLVER is 'chaff';
+
+  --max=MAX        		: MAX is the maximum depth of the 
+				  search space up to which SATMC will
+				  explore; it can be set to -1 meaning
+				  infinite, but in this case the
+				  procedure is not guaranteed to
+				  terminate; by default it is set to
+				  30;
+
+  --enc=ENC	 		: ENC is the selected SAT reduction 
+				  encoding technique; it can be set to
+				  either:
+				  - 'linear',	
+				  - 'gp-efa' (default value), or 
+				  - 'gp-bca'; 
+                                  'linear' and 'gp-bca' cannot be applied
+	                          on IF v.2 specifications; 
+
+  --mutex=MUTEX	 		: MUTEX is an integer indicating the 
+                                  level of the mutex relations to be
+                                  used during the SAT-reduction,
+                                  namely:
+				  0: mutex off (absRef on)
+				  1: only static mutex (absRef off)
+				  2: static and dynamic mutex (absRef
+				     off); value accepted only when
+				     the encoding is set to gp-bca
+                                  Basically, if MUTEX is set to 0,
+                                  then the abstraction/refinement
+                                  strategy provided by SATMC is
+                                  enabled; otherwise the
+                                  abstraction/refinement strategy is
+                                  disabled and the static mutexes are
+                                  generated; moreover if --mutex=2 and
+                                  --enc=gp-bca, then also the dynamic
+                                  mutexes are generated; default value
+                                  is 1;
+
+  --ct=CT			: CT is a boolean parameter for 
+				  enabling or disabling compound
+				  types; by default it is set to true;
+
+  --oi=OI			: OI is a boolean parameter for 
+				  enabling or disabling the optimized
+				  intruder model (i.e.the intruder is
+				  able to extend immediately its
+				  knowledge); by default it is set to
+				  false;
+
+  --sc=SC			: SC is a boolean parameter for 
+				  enabling or disabling the
+                                  step-compression optimization; by
+                                  default it is set to true;
+				  
+  --check_only_executability=CE : CE is a boolean parameter for 
+				  enabling or disabling the check on
+				  executability of actions/rules
+				  without any intruder. It is very
+				  useful to debug the input
+				  specification; by default it is set
+				  to false;
+
+  --output_dir=ODIR		: ODIR is the directory in which SATMC 
+				  will store temporary files and put
+				  the results of the analyses; (by
+				  default and in the case the input
+				  file is in the SATE language, these
+				  files will be put in the same
+				  directory in which FILE is
+				  contained.)
+
+  --if2sate=IF2SATE		: IF2SATE is the version of the 
+				  compiler used for translating a IF
+				  specification into a SATE
+				  specification; it can be set either
+				  to 1 or 2 (default value);
+                                  the AVISPA tool uses IF v.2 
+                                  specifications;  
+
+  --prelude=PRELUDE		: PRELUDE is the prelude file 
+				  (comprehensive of the path); by
+				  default it is assumed that the
+				  prelude file is in the same
+				  directory of FILE with the name
+				  'prelude.if';
+
+  --avispa=AVISPA 		: AVISPA is a boolean parameter for 
+				  enabling or disabling the AVISPA
+				  output format; by default it is set
+				  to true; for more details on the EU
+				  project AVISPA see
+				  http://www.avispa-project.org;
+
+* FILE is either the IF or the SATE file (comprehensive of the path)
+  you want to compile into SAT and analyze.
+
+
+===============
+2. MAILING LIST
+===============
+
+You can use two mailing list:
+
+satmc-support@ai.dist.unige.it   - to send messages to the SATMC team
+satmc-users@ai.dist.unige.it     - to exchange messages with other SATMC 
+				   users
+
+=====================================
+3. AUTHORS, CONTRIBUTORS, AND CONTACT
+=====================================
+
+Written by: Alessandro Armando              and Luca Compagna
+email:      armando@dist.unige.it           and compa@dist.unige.it
+URL:        www.ai.dist.unige.it/armando    and www.ai.dist.unige.it/compagna
+
+Address:    DIST -- Universita' degli Studi di Genova
+            Viale Causa 13
+            16145 Genova 
+            ITALIA
+
+Contributors: Pierre Ganty
+              Cristina Fra`
+              Jacopo Mantovani
+	      Roberto Carbone
+
+Project:      AVISPA - Automated Validation of Internet Security Protocols 
+		       and Applications
+
+Project URLs: http://www.ai.dist.unige.it/satmc/
+	      http://www.avispa-project.org/	
+
+Send bug-reports and/or questions to: satmc-support@ai.dist.unige.it
+
+

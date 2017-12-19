@@ -1,0 +1,414 @@
+#!/bin/bash
+#
+#  AVISPA shell script file                 last update: June 30, 2006
+#
+#  Version: 1.1
+#
+#  Original version (C) 2006, 
+#                   The AVISPA Team, avispa-general@avispa-project.org
+#
+#  History / Contributors: check the AVISPA Web Page
+#
+#  minimal usage:
+#	avispa input.hlpsl
+#
+#  It is assumed that the environment variable AVISPA_PACKAGE has been
+#  set to the AVISPA package root directory.
+
+# FIXED VALUES
+_version='1.1'
+_date_release='June 30, 2006'
+_logs_dir=$AVISPA_PACKAGE/logs
+_translator_dir=$AVISPA_PACKAGE/bin/translator
+_backend_dir=$AVISPA_PACKAGE/bin/backends
+
+
+_translator=$_translator_dir/hlpsl2if
+_cl_atse=$_backend_dir/cl.bash
+_ofmc=$_backend_dir/ofmc.bash
+_satmc=$_backend_dir/satmc.bash
+_ta4sp=$_backend_dir/ta4sp.bash
+
+_avispa_log=$_logs_dir/avispa.log
+_avispa_tmp=$_logs_dir/avispa.tmp
+
+# CHECK AVISPA_PACKAGE ENVIRONMENT VARIABLE
+if test "$AVISPA_PACKAGE" = "" ; then 
+  _dir=`pwd`
+  cat << EOF
+
+AVISPA v. $_version
+Date of release: $_date_release
+
+ERROR: 
+In order to work properly the AVISPA tool requires the environment
+variable AVISPA_PACKAGE to be set to the root directory of the AVISPA
+package. Please do it.
+
+EOF
+  exit 0
+else _dir=$AVISPA_PACKAGE
+fi
+
+# DEFAULT SETTING
+_outdir=$_dir/testsuite/results
+_module=hlpsl2if
+_backend_label=ofmc
+_backend=$_ofmc
+_typed_model=yes
+_nowarnings=""
+_solving=0
+_backend_options_flag=0
+_hlpsl2if_options=""
+_backend_options=""
+_no_hlpsl2if=0
+_with_time=""
+_time=/usr/bin/time
+
+
+# FIRST ARGUMENT
+if [ -z "$1" ] ; then 
+  echo "Usage: `basename $0` FILE [OPTIONS] [MODULE MOPTIONS]" 
+  echo "Try '`basename $0` --help' for more information."
+  exit 0
+fi  
+
+case "$1" in
+
+    # Usage: avispa --help
+    --help | -help | -h)
+	echo
+	cat $AVISPA_PACKAGE/HELP
+	echo
+	exit 0
+	;;
+    # Usage: avispa --version
+    --version | -version | -v)
+	cat << EOF
+
+AVISPA v. $_version
+Date of release: $_date_release 
+
+Copyright (C) 2005 by the AVISPA Team
+www.avispa-project.org
+
+This system is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the file
+LICENSE for more details.
+EOF
+	exit 0
+	;;
+    # Usage: avispa --examples
+    --examples | -examples | -e)
+	echo
+	cat $AVISPA_PACKAGE/EXAMPLES.txt
+	echo
+	exit 0
+	;;
+    # Usage: avispa MODULE MOPTION
+    --hlpsl2if | --cl-atse | --ofmc | --satmc | --ta4sp)
+        # Error: missing MOPTION
+	if [ -z "$2" ] ; then 
+	    echo "`basename $0` $1: missing option [--help|--version]"
+	    echo "Usage: `basename $0` MODULE MOPTION" 
+	    echo "Try '`basename $0` --help' for more information."
+	    exit 0
+	fi  
+	case "$2" in
+            # Usage: avispa MODULE --help
+	    --help | -help | -h)
+		:
+		;;
+            # Usage: avispa MODULE --version
+	    --version | -version | -v)
+		:
+		;;
+            # Error: unknown MOPTION
+	    *)    
+		echo "`basename $0` $1: invalid use of option $2"
+		echo "Usage: `basename $0` MODULE MOPTION" 
+		echo "Try '`basename $0` --help' for more information."
+		exit 0
+		;;
+	esac
+	case "$1" in
+	    --hlpsl2if)
+		$_translator $2
+		exit 0
+		;;
+	    --ofmc)
+		$_ofmc $2
+		exit 0
+		;;
+	    --satmc)
+		$_satmc $2
+		exit 0
+		;;
+	    --cl-atse)
+		$_cl_atse $2
+		exit 0
+		;;
+	    --ta4sp)
+		$_ta4sp $2
+		exit 0
+		;;
+	    *)
+		:
+		;;
+	esac
+	;;
+    # Error: either unknown MODULE or OPTION
+    --*)
+        echo "`basename $0`: invalid option $1"
+        echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+	echo "Try '`basename $0` --help' for more information."
+	exit 0
+	;;
+    *)
+	;;
+esac
+
+if [ -e "$1" ] ; then 
+  _input_file=$1
+else 
+  echo "$1: No such file or directory"
+  exit 0
+fi  
+
+## The first option (i.e. input hlpsl/if file) has been already checked
+shift 1
+
+echo "BEGIN: AVISPA" > $_avispa_log
+echo "Command issued:" >> $_avispa_log
+echo "   avispa $@" >> $_avispa_log
+
+i=1
+for ac_option in $@; do 
+  ((i = i + 1));
+  case "$ac_option" in
+      --typed_model=*)
+	  _typed_model=`echo $ac_option | cut -d '=' -f 2`
+	  case "$_typed_model" in
+	      yes)
+		  : ##echo "AVISPA will analyse the protocol wrt the typed model."
+		  ;;
+	      no)
+		  : ##echo "AVISPA will analyse the protocol wrt the untyped model."
+		  ;;
+	      strongly)
+		  : ##echo "AVISPA will analyse the protocol wrt the strongly-typed model."
+		  ;;
+	      *)
+		  echo "Unknown typed_model value: $_typed_model"
+		  exit 1
+		  ;;
+	  esac
+	  ;;      
+      --output=*)
+	  _outdir=`echo $ac_option | cut -d '=' -f 2`
+	  ;;
+      --nowarnings)
+	  _nowarnings='--nowarnings'
+	  ;;
+      --with-time=*)
+	  _with_time=`echo $ac_option | cut -d '=' -f 2`
+	  ;;
+      --no-hlpsl2if)
+	  _tmp_file1=`basename $_input_file .if`
+	  _tmp_file2=`basename $_input_file`
+	  if test ! "$_tmp_file1.if" = "$_tmp_file2" ; then
+	      echo "`basename $0`: invalid extension for $_input_file (it conflicts with --no-hlpsl2if that requires .if extension)"
+	      echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+	      echo "Try '`basename $0` --help' for more information."
+	      exit 0
+	  fi
+	  _no_hlpsl2if=1
+	  ;;
+      --hlpsl2if)
+	  if test "$_no_hlpsl2if" = "1" ; then
+	      echo "`basename $0`: invalid option --hlpsl2if (it conflicts with --no-hlpsl2if)"
+	      echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+	      echo "Try '`basename $0` --help' for more information."
+	      exit 0
+	  fi
+	  _module=hlpsl2if
+	  _solving=0
+	  ((index = i - 1))
+	  break
+	  ;;
+      --ofmc)
+	  _module=ofmc
+	  _backend=$_ofmc    ##echo "OFMC has been selected"
+	  _solving=1
+	  _backend_options_flag=1
+	  ((index = i - 1))
+	  break
+	  ;;
+      --satmc)
+	  _module=satmc
+	  _backend=$_satmc   ##echo "SATMC has been selected"
+	  _solving=1
+	  _backend_options_flag=1
+	  ((index = i - 1))
+	  break
+	  ;;
+      --cl-atse)
+	  _module=cl-atse
+	  _backend=$_cl_atse ##echo "CL-AtSe has been selected"
+	  _solving=1
+	  _backend_options_flag=1
+	  ((index = i - 1))
+	  break
+	  ;;
+      --ta4sp)
+	  _module=ta4sp
+	  _backend=$_ta4sp   ##echo "TA4SP has been selected"
+	  _solving=1
+	  _backend_options_flag=1
+	  ((index = i - 1))
+	  break
+	  ;;
+      # No more [--help|-help|-h|--version|-version|-v|--examples|-examples|-e] 
+      --help | -help | -h | --version | -version | -v | --examples | -examples | -e)
+	  echo "`basename $0`: bad usage of the option $ac_option"
+	  echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+	  echo "Try '`basename $0` --help' for more information."
+	  exit 0
+	;;
+      ## All the other cases:
+      *)
+	  echo "`basename $0`: invalid option $ac_option"
+	  echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+	  echo "Try '`basename $0` --help' for more information."
+	  exit 0
+	  ;;
+  esac
+done
+
+shift $index
+
+# No more [--help|--version] 
+# No more [--hlpsl2if]
+for module_option in $@; do 
+  case "$module_option" in
+      --help | --version)
+	  echo "`basename $0`: $_module: bad usage of the option $module_option"
+	  echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+	  echo "Try '`basename $0` --help' for more information."
+	  exit 0
+	  ;;
+      --no-hlpsl2if)
+	  if test "$_module" = "hlpsl2if" ; then
+	      echo "`basename $0`: invalid option --no-hlpsl2if (it conflicts with --hlpsl2if)"
+	      echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+	      echo "Try '`basename $0` --help' for more information."
+	      exit 0
+	  fi
+	  ;;
+      *)
+	  :
+	  ;;
+  esac
+done
+
+# # Only .hlpsl and .if files are accepted as input
+# if ! test "$_no_hlpsl2if" = "1" ; then
+#     _tmp_file1=`basename $_input_file .hlpsl`
+#     _tmp_file2=`basename $_input_file`
+#     if ! test "$_tmp_file1.hlpsl" = "$_tmp_file2" ; then
+# 	echo "`basename $0`: invalid extension for $_input_file (.hlpsl extension is required)"
+# 	echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+# 	echo "Try '`basename $0` --help' for more information."
+# 	exit 0
+#     fi
+# fi
+
+if test "$_solving" = "0" ; then
+    _hlpsl2if_options=$@
+#    echo "HLPSL2IF_OPTIONS: $_hlpsl2if_options"
+fi
+
+if test "$_backend_options_flag" = "1" ; then
+    _backend_options=$@
+#    echo "BACKEND_OPTIONS: $_backend_options"
+fi
+
+# Construct the time invokation command when --with-time is used.
+if test "$_with_time" = "" ; then
+    _time_cmd=""
+else
+    _time_cmd="$_time -o $_with_time -f \"%U\" "
+fi
+
+if ! test "$_no_hlpsl2if" = "1" ; then
+    # TRANSLATE
+    # INVOKE THE hlpsl2if TRANSLATOR
+    echo >> $_avispa_log
+    echo "BEGIN: HLPSL2IF TRANSLATION" >> $_avispa_log
+    echo "Command issued:" >> $_avispa_log
+    echo "   $_translator $_nowarnings --output $_outdir $_hlpsl2if_options $_input_file"  >> $_avispa_log
+
+    # CHECK THAT THE hlpsl FILE IS SUCCESSFULLY TRANSLATED 
+    # INTO if. 
+    # NAMELY AN ERROR IS RECOGNIZED IF
+    # - THE hlpsl2if TRANSLATOR RETURNS THE STRING: "syntax error" 
+    #   ON THE STANDARD OUTPUT, or
+    # - THE hlpsl2if TRANSLATOR RETURNS AS LAST LINE OF THE ERROR 
+    #   STANDARD OUTPUT THE STRING: "Fatal error"
+    # - THE hlpsl2if TRANSLATOR RETURNS IN THE ERROR STANDARD 
+    #   OUTPUT THE STRING: "unknown option"
+
+    if `($_translator $_nowarnings --output $_outdir $_hlpsl2if_options $_input_file >> $_avispa_tmp) 2>> $_avispa_tmp` ; then
+	_translator_result1=`head -n 1 $_avispa_tmp`
+	_translator_result2=`grep -c -e 'unknown option' $_avispa_tmp`
+	cat $_avispa_tmp  >> $_avispa_log
+	if test "$_translator_result1" = "syntax error" || ((_translator_result2 > 0)) ; then
+	    echo
+	    echo "ERROR:"
+	    echo "The hlpsl2if translator failed in generating the IF file."
+	    echo
+	    cat $_avispa_tmp
+	    echo
+	    rm -f $_avispa_tmp
+	    exit 0
+	fi
+    else
+	cat $_avispa_tmp >> $_avispa_log
+	echo
+	echo "ERROR:"
+	echo "The hlpsl2if translator failed in generating the IF file."
+	echo
+        cat $_avispa_tmp
+	echo
+	rm -f $_avispa_tmp
+	exit 0
+    fi  
+    rm -f $_avispa_tmp
+    echo "END: HLPSL2IF translation" >> $_avispa_log
+    echo >> $_avispa_log
+    _protocol_name=`basename $_input_file .hlpsl`
+    _if_file=$_outdir/$_protocol_name.if
+else 
+    ## DON'T TRANSLATE
+    echo "SKIPPED: HLPSL2IF translation" >> $_avispa_log
+    _if_file=$_input_file
+fi
+
+if test "$_solving" = "0" ; then
+    if test "$_no_hlpsl2if" = "1" ; then
+	echo "`basename $0`: invalid option --no-hlpsl2if (it conflicts with default --hlpsl2if)"
+	echo "Usage: `basename $0` file [OPTIONS] [MODULE MOPTIONS]" 
+	echo "Try '`basename $0` --help' for more information."
+	exit 0
+    fi
+    echo "%% Translation from HLPSL to IF completed."
+else
+    # INVOKE THE SELECTED BACKEND ON THE GENERATED IF PROBLEM
+    echo "BEGIN: BACKEND ANALYSIS" >> $_avispa_log
+    echo "Command issued:" >> $_avispa_log
+    echo "   $_backend $_if_file --typed_model=$_typed_model --output=$_outdir $_backend_options"  >> $_avispa_log
+    $_time_cmd $_backend $_if_file --typed_model=$_typed_model --output=$_outdir $_backend_options
+    echo "END: BACKEND ANALYSIS" >> $_avispa_log
+    echo "END AVISPA" >> $_avispa_log
+fi

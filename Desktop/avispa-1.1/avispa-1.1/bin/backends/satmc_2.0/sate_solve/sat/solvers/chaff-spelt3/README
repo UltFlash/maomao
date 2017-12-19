@@ -1,0 +1,25 @@
+this is a hasity thrown together source distibution of chaff, version spelt3.
+
+this is the current development version, and it has some strange features, and the code isn't as 
+readable as it could be. but that said, the core of the solver should be fairly stable, and should 
+(in combination with the chaff papers) allow anyone to build thier own solver or customize this one. 
+
+be warned that i (matthew moskewicz) am not really planning on supporting this version. my plan is to
+clean it up and simplify it in some ways, and then release the result of that effort as a "teaching"  
+version that should be more accessible to the average programmer.
+
+see also lintaoz zhang's zchaff, which is an implimenation based on an earlier version of chaff -- it
+uses a simpler (but less general) method to maintain the DLs of implications on conflict classes (a
+maximal unwind), which seems to work fine on average. this distribuation can be configured to behave
+similarly, but doing so creates a lot of code that could be simplified.
+
+having implimented this solver a bazzilion times has given me some insight into the most elegant 
+formulations for the solver, and i beleive the entire solver core can be done in about 600 lines (in 
+retrospect) so that's what i'll aim for in the next release.
+
+for license terms, see the file LICENSE.
+
+for all else, go to the web site for this distribution (spelt3):
+http://www.ee.princeton.edu/~chaff/spelt3/
+
+

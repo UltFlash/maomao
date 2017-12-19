@@ -1,0 +1,37 @@
+SATMC: ADVANCEMENTS LIST
+========================
+
+==============
+02 August 2005
+==============
+Integrated the SAT solver zChaff released on 2004/11/15.
+
+
+============
+04 July 2005
+============
+Extended if2sate_2.0 to support for the generation of fresh agents and
+fresh functions.
+
+
+============
+29 June 2005
+============
+Updated 
+
+  sate_solve/sat/solvers/chaff-spelt3/Chaff2
+
+for working with more recent version of libstdc++-libc.
+
+
+============
+29 June 2005
+============
+Enhanced if2sate_2.0 with the step compression optimization.
+
+
+============
+29 June 2005
+============
+The parser if2sate_2.0/if_parser.pl has been significantly optimized
+and improved.

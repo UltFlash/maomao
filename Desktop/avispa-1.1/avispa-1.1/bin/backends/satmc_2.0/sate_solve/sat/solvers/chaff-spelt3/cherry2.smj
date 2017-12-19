@@ -1,0 +1,47 @@
+# another out of date config file
+
+[topLevel]
+
+  includeLoadTime = 0
+  abortTime  = 0       
+  printCommandLineParams = 11
+  printResourceUsage = 11
+  printNewlineAtEnd = 0
+
+
+[solver]
+  printInfoMessages = 11
+  printStats = 11
+  printDecisions = 0
+
+  restartPeriod = 2000
+  restartPeriodInc = 200
+  randomnessAtRestart = 3
+
+  addPostfixOnly = 100
+
+[decMem]
+  baseRandomness = 0
+
+  maxLitsInClaseForConfDriven = 1000000  # ie. consider all clases
+  markSpecialVars = 0
+  breakTiesRandomly = 1
+  useLazyErase = 1
+
+  clearPeriod =  2000
+  firstClear = 2000
+  clearPeriodIncrement = 10
+  clearShiftAmt = 3
+
+[claseMem]
+  printInfoMessages = 11
+  printStats = 11
+
+  cleanupPeriod = 100000
+  minUnassigToDelete = 10
+  minLitsToDelete = 100
+
+
+
+
+

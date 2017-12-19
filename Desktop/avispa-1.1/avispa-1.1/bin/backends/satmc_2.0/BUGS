@@ -1,0 +1,123 @@
+SATMC: BUGS LIST
+================
+
+=================
+31 January 2006
+=================
+Found a bug in the parsing of IF v.2 specifications.  A syntax error
+inside a left/right-hand-side (e.g. the use of a variable '_X') of a
+rule causes SATMC to backtrack a huge number of times instead of just
+stop returning an error. The issue has been fixed.
+
+=================
+24 January 2006
+=================
+Found a bug in the parsing of IF v.2 specifications.  Zero-ary
+functions and facts could not be parsed. The issue has been fixed.
+
+=================
+13 October 2005
+=================
+Found a bug in the handling of refinement clauses for the linear
+encoding.  Identical refinement clauses were added to the formula at
+each new step and new refinement iteration.  The issue has been fixed
+by simply adding an appropriate condition to the refinement clauses
+stored in the SICStus database.  Such a condition is then evaluated
+before translating the clause in the DIMACS format.  If unsuccessful
+the corresponding clause is ignored.
+
+=================
+13 October 2005
+=================
+Found a bug in the translation from IF v.1 into SATE.  Namely the file
+if2sate/pif2sate.pl added a not completely correct predicate
+
+  session_and_freshness_variable_condition(SES,FCX)
+
+to the generated SATE file.  The aim of this predicate is to avoid to
+consider fresh terms (identified by FCX) that by construction cannot
+have been generated at that point.  For instance, let SES = s(0) and
+FCX = c(a,s(s(0))), we have that the fresh term associated to
+c(a,s(s(0))) will be generated in the third iteration of session 0.
+As a consequence the above predicate fails since FCX cannot have been
+generated when we are at s(0), i.e., the second iteration of session
+0.  However, this predicate wrongly failed, for instance, when SES =
+s(0) and FCX = c(a,s(s(1))), but it should not because the session
+identifiers of those terms are different.  The issue has been fixed.
+
+
+=================
+30 September 2005
+=================
+Found a minor issue in zChaff.  This SAT solver has a bound, besides
+others, on the maximum number of literals that can occur in a
+clause. The issue has been fixed simply by increasing this bound and
+by re-compiling the source code of the solver.
+
+
+==============
+31 August 2005
+==============
+Found a minor bug in handling the step compression optmization when
+the if2sate_2.0 translator is selected.  Namely the binary predicate
+'correspondence_between_action_and_step_compressed_rule' could not be
+enforced when a SATE file were given as input.  The bug has been fixed
+simply by appending to any SATE file generated the definition of the
+predicate 'correspondence_between_action_and_step_compressed_rule'.
+
+
+==============
+01 August 2005
+==============
+Found a minor bug in mChaff.  The SAT solver does not return the time
+spent to solve the formula, but always "0".  A trick has been
+introduced to fix the issue.  Namely, we wrap mChaff within the
+invocation of the bash time command and we return the user time as
+solving time.
+
+
+============
+04 July 2005
+============
+Found two bugs in 
+
+  if2sate_2.0/if_translator.pl 
+
+Namely:
+
+(1) the intruder rules were wrongly not generated for those honest
+    agent rules having some conditions (e.g. [\+'Nr'='Nr2']).  
+
+(2) the composition rules for building the messages in a secret fact
+    were not generated since the syntax of secret were not been
+    updated from binary to ternary.  The problem has been fixed.
+
+Both the bugs have been fixed.
+
+
+============
+30 June 2005
+============
+Found a bug in 
+
+  if2sate_2.0/if_parser.pl 
+
+Namely any IF term that started with "text" were translated into
+another that started with "nonce".  This replacement rule should
+regards only the type "text" that should be translated into "nonce"
+and nothing else.  The problem has been fixed.
+
+
+============
+17 June 2005
+============
+Found a bug in the interface of SATMC about the option --mutex.  You
+could give any value to this option (e.g. --mutex=0), but the analyses
+did not take it into account.  The problem has been fixed.
+
+
+============
+07 June 2005
+============
+Found a bug in sate_solve/lp/sate2lp.pl.  The simplify mechanism for
+fluents were wrong.  The problem has been fixed.

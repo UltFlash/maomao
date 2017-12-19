@@ -1,0 +1,134 @@
+
+----------------------------------------------------------
+                        OFMC
+An On-the-fly model-checker for security protocol analysis
+----------------------------------------------------------
+
+AUTHOR
+------
+Written by:  Sebastian M"odersheim,
+	     Paul Hankes Drielsma,
+             Patrick Schaller
+email:       {moedersheim,drielsma,patrick.schaller}@inf.ethz.ch
+URL:         www.inf.ethz.ch/~{moedersheim,drielsma,schapatr}
+Address:     Information Security
+              ETH Zentrum, IFW C47.1
+              Haldeneggsteig 4
+              CH-8092 Zurich
+              Switzerland
+
+Project:     AVISPA - Automated Validation of
+              Internet Security Protocols and Applications
+Project URL: www.avispa-project.org
+
+
+==========================================================
+
+Overview:
+---------
+
+The On-the-Fly Model-Checker OFMC is an analysis tool for security
+protocols.  OFMC is based on the idea of the lazy intruder which is a
+symbolic, constraint-based approach to modeling an intruder.  Combined
+with the reduction technique known as constraint differentiation, the
+lazy intruder allows OFMC to perform analyses very fast.
+
+The most important new feature of this release is that the user can
+specify an algebraic theory on message terms, modulo which the
+analysis of the protocol is performed.  For more information on using
+algebraic theories, see the file "user-guide-algebraic.pdf" in the
+docs/ofmc directory included in this distribution.  Example theories
+and IF specifications that employ algebraic theories can be found in
+the directory testsuite/algebraic.
+
+OFMC is developed in the context of the EU Project AVISPA (Automated
+Validation of Internet Security Protocols and Applications,
+www.avispa-project.org IST-2001-39252). Earlier development on OFMC
+took place in the context of the predecessor project AVISS (Automated
+Verification of Infinite-State Systems IST-2000-26410).
+
+The AVISPA Tool also includes the protocol analysis tools SATMC,
+developed by the group of Alessandro Armando at the university of
+Genova; CL-AtSe, developed by the group of Michael Rusinowitch at the
+INRIA institute in Nancy; and TA4SP, developed at INRIA, Besancon.
+
+All analysis tools of the AVISPA project are based on two
+specification languages: HLPSL (the High-Level Protocol Specification
+Language) and IF (the Intermediate Format). The HLPSL allows for an
+easy description of protocols by the user, while the IF is a low-level
+language suited for automatic input to analysis tools.  The HLPSL2IF
+translator, also shipped as part of the AVISPA Tool, is developed at
+INRIA Nancy.
+
+
+Usage:
+------
+
+In general, OFMC is called directly by the AVISPA Tool.  You can
+specify OFMC as the desired back-end using the --ofmc switch as
+follows:
+   avispa <filename> [OPTIONS] --ofmc [OFMC OPTIONS]
+
+Note that, at the present time, support for algebraic theories is
+limited to protocols specified directly in IF.  If you want to use IF
+files directly avispa, then the "--no-hlpsl2if" option can be given to
+indicate that the AVISPA Tool does not need to call the translator.
+
+Should you wish to call OFMC directly, you can do so as follows:
+
+   ofmc <filename> [-theory <TheoryFile> ] [-sessco] [-untyped] 
+                   [-d <DEPTH>] [-p <PATH>]
+
+Meaning of the arguments:
+
+- <filename> is an IF file to be checked.  IF files are generated
+   by the AVISPA Tool or by hlpsl2if directly.
+
+- -theory allows the user to specify a custom algebraic theory given
+   in the file <TheoryFile>.  See the file "user-guide-algebraic.pdf"
+   in the docs/ofmc directory for more information, including details
+   about the default algebraic theory used by OFMC.  See also the
+   examples in directory testsuite/examples.
+
+- -sessco performs an executability check on the protocol
+   specification and then performs an analysis using session
+   compilation, an optimization for the quick detection of replay
+   attacks.
+
+- -untyped specifies that the analysis should be performed in an
+   untyped model.  Typing information in the IF specification will
+   be ignored.
+
+- -d allows you to specify that the analysis should proceed only
+   up to maximum search depth <DEPTH> in the search tree.
+
+- Using the -p option, one can browse the search tree "manually",
+   where <PATH> is a white-space separated list of integers specifying
+   a path in the search tree.  For example:
+   -p   is the root node
+   -p 0 is the first (left-most) successor of root node
+   -p 0 1 is the second successor (next to left-most) successor
+          of the node obtained by -p 0
+   If you specify the path to a non-existing node, an exception is raised.
+
+All of these options can also be passed to OFMC via the AVISPA Tool as
+[OFMC OPTIONS] as shown above.
+
+Acknowledgments:
+----------------
+
+In addition to the primary authors, David Basin (basin@inf.ethz.ch)
+and Luca Vigano' (vigano@inf.ethz.ch) contributed in various ways to
+the development of OFMC.
+
+------------------------------------------
+Send questions and bug reports to:
+Sebastian M"odersheim
+<moedersheim@inf.ethz.ch>
+and
+Paul Hankes Drielsma
+<drielsma@inf.ethz.ch>
+and
+Patrick Schaller
+<patrick.schaller@inf.ethz.ch>
+------------------------------------------

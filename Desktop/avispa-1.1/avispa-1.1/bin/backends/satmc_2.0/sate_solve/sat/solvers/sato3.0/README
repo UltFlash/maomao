@@ -1,0 +1,123 @@
+             How to Install and Run SATO (version 3.0)
+             -----------------------------------------
+
+SATO stands for "SAtisfiability Testing Optimized".
+This file contains instructions to install sato, a decision procedure
+for propositional logic written in C by Hantao Zhang.
+
+1. Ftp the file sato.tar.Z from ftp.cs.uiowa.edu
+and put the file into your directory.
+
+2. Extract the Files:
+
+% zcat sato.tar.Z | tar xvf -
+
+The following files will be generated:
+
+README     clocks.h    main.o      oarray.c    random.h    test2.c
+bench.c    list.c      makefile    pmd.c       sato.c      trie.c
+cgroup.c   list.h      makefull    proto.h     sato.h      trie.h
+clause.c   main.c      makelean    qgroup.c    sato.o
+clocks.c   main.h      ngroup.c    random.c    square.c
+
+
+3. Install Sato:
+
+The current release has two versions of sato: one with many benchmark
+problems (full version) and one without (lean version, the default).
+The size of the binany code for the lean version is about one third of
+that of the full version.  To make the full version, you need to run
+
+% rm makefile; ln -n makefull makefile
+
+(alternatively, you may type "make -f makefull")
+
+The .o files should be deleted before you switch to the other version.
+
+Once you decide the version, the rest is easy:
+
+% make
+The following messages will appear on a SGI workstation:
+        cc -O  -c  main.c
+        cc -O  -c  trie.c
+        ... ...
+        cc -O  main.o sato.o trie.o list.o clocks.o clause.o -lc -o sato
+        chmod a+x sato
+
+If you want more trace messages of sato, you have to modify the file
+"makefile" so that the last definition of CFLAGS contains
+"-DMORETRACE".
+
+
+4. Run Sato:
+
+A simple online instruction is given when sato is typed:
+
+% sato
+Usage: sato [<Options>] <Input_file>
+
+Options are:
+   -f       : use the input format suggested by DIMACS
+   -p       : preprocess (sort) input clauses
+   -o<n>    : print out clauses (0 <= n <= 3)
+   -g<n>    : set the length of created clauses to be saved
+   -h<n>    : set the maximal number of hours to be run
+   -m<n>    : set the number of expected models (default: 1)
+   -t<n>    : set the trace level (0 or 1)
+   -e fname : give the file name of unfinished jobs
+   
+Input_file is either `-' (denotes the standard input) or a 
+    file name. The default input consists of a list of clauses, each of
+    which is a list of nonzero integers surrounded by parentheses.
+    When -p is not set, it is more efficient if the integers in
+    each clause are in nondecreasing order of their absolute values.
+    Tautologies and duplicated literals are always removed.
+    E.g., (1 1 -2 -4) is the same as (1 -2 -4).
+    If the option `-f' is set, the DIMACS format will be used.
+
+The option "-o<n>" is useful if you use sato as a propositional clause
+generator.  The four cases of n are: 
+
+   -o:   print out all clauses, excluding subsumed, in sato's format
+   -o1:  print out all the clauses in sato's format
+   -o2:  print out all clauses, excluding subsumed, in DIMACS's format
+   -o3:  print out all the clauses in DIMACS's format
+
+The option "-g<n>" is new in this release.  This option affects
+the performance of sato dramatically.  At each failed branch
+in the Davis-Putnam algorithm, sato tries to identify the source
+of the failure and create a new clause.  The number `n' is
+the maximal length of the created clauses to be saved.
+For the current release, the default value is 20.
+For certain problems, a large `n' improves the performance;
+for other problems, a large `n' deteriorates the performance
+(because it consumes too much memory).  20 is too big for 
+many problems but this is the number we used for running 
+DIMACS's benchmark problems.
+
+
+5. Benchmarks:
+
+For the full version, the following options can replace the input file:
+
+   -A<n>    : Random k-sat problems (-K<k>, n atoms, -C<c> clauses)
+   -P<n>    : Pigeonhole problems (n holes, n+1 pigeons)
+   -Q<n>    : Queen problems (n queens on n by n board)
+   -R<n>    : Ramsey numbers r(p, q) = n with -P<p> and -Q<q>
+   -G<n>    : Quasigroup problems: QGm(n), m from -Q<m>
+   -B<n>    : Cyclic method for quasigroups QGm(h^g, i), where:
+   -C<n>    :   n=hg+k, m from -Q<m>, h from -H<h>, i from -I<i>
+   -K<k>    : k-PMD(h^g, i) problems, h, g, i, as above
+   -O<k>    : k-MOLS(h^g, i) problems, h, g, i, as above
+
+Using the "-o" option together with these options, sato generates the
+input clauses for various problems.
+
+6. Report Problems to:
+
+      hzhang@cs.uiowa.edu 
+or
+      Hantao Zhang
+      Department of Computer Science 
+      University of Iowa
+      Iowa City, Iowa 52242

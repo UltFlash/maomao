@@ -1,0 +1,157 @@
+SATMC: INSTALL
+==============
+
+Please take a look to the file LICENSE before proceeding further.
+
+This software is being developed as a research tool.  We continue to
+make significant changes to it.  This is a "alpha" release which we
+are doing primarily in order to get feedback.  We want to know what
+you think of SATMC, so please send comments to us at
+satmc-users@ai.dist.unige.it.
+
+
+===========
+0. CONTENTS
+===========
+ 1. Installation procedure
+ 2. Files in the SATMC distribution
+ 3. Platforms
+ 4. Troubleshooting
+ 5. Authors, contributors, and contact
+
+=========================
+1. INSTALLATION PROCEDURE
+=========================
+
+In order to execute SATMC v. 2.0 you need to extract files from the
+archive satmc_2.0.tgz and then to set the environment variables:
+
+SP_PATH, and
+LD_LIBRARY_PATH
+
+If the file 'satmc' is rooted in '/home/satmc_2.0/', then the above
+environment variables should be set to:
+
+'/home/satmc_2.0/lib/sicstus-3.12.3', and
+'/home/satmc_2.0/lib'
+
+respectively (please use absolute path). 
+
+Now you should be able to execute SATMC v. 2.0.  Please see the README
+file for informations about the command line options of SATMC.
+
+
+===================================
+2. Files in the SATMC distribution
+===================================
+ 
+|- satmc             The satmc executable.
+|  
+|- INSTALL           This file.
+|  
+|- README            Description of SATMC and command line options.
+|                    inside the AVISPA tool.
+|  
+|- LICENSE           The SATMC public license.
+|  
+|- HELP              Instructions about SATMC command line options
+|                    inside the AVISPA tool.
+|
+|- ADVANCEMENTS      Advancements list
+|
+|- BUGS              Bugs list
+|  
+|- lib/              The required SICStus prolog libraries.  
+|  
+|- testsuite/        
+|  |
+|  |
+|  \- 2.0/           
+|     |  
+|     \- if          Prelude file.
+|     
+|
+|  
+|  All the files *.ql are produced by means of the SICStus Prolog
+|  compiler.  The SATMC system is organized in various directories.
+|  Each directory contains compiled files useful to provide a precise
+|  functionality, namely:
+|
+|  
+|- basic/            Basic predicates.
+|  
+|- if2sate/          IF v.1 to SATE translation.
+|  
+|- if2sate_2.0/      IF v.2 to SATE translation.
+|  
+\- sate_solve/       Solving a SATE specification.
+   |
+   |- sat/             Reducing SATE into SAT and invoking SAT solvers.
+      |
+      \- solvers/        Binaries of the integrated SAT solvers.
+    
+
+============
+3. PLATFORMS
+============
+
+The current distribution of SATMC has been tested, so far, with:
+
+- bash shell, under PC Intel architecture, with different versions and
+  distributions of Linux.  SATMC requires GLIB version 2.3 or greater
+  to work properly.
+
+- Mac OS X 10.4.5 Tiger.  If you are using SATMC on a different
+  version of Mac OS X, please share your experience by sending a mail
+  to us at satmc-support@ai.dist.unige.it.
+
+SATMC is a modular open architecture that currently integrates four
+different SAT solvers.  A detailed explanation of the platforms under
+which these SAT solvers work goes beyond the scope of this section and
+the interested reader should consult the documentation provided with
+the SAT solver itself.  Some informations reported by SATMC' users
+is given in the Troubleshooting section.
+
+Should you encounter any difficulty in installing and running SATMC on
+your machine, please send us a message to
+satmc-support@ai.dist.unige.it
+
+===================
+4. TROUBLESHOOTING
+===================
+
+Follow some notes:
+
+- the SAT solver mChaff requires libstdc++-libc6.2-2.so.3 or greater.
+
+- we do not include the SAT solver mChaff for the MAC OS X distribution.
+
+=====================================
+5. AUTHORS, CONTRIBUTORS, AND CONTACT
+=====================================
+
+Written by: Alessandro Armando              and Luca Compagna
+email:      armando@dist.unige.it           and compa@dist.unige.it
+URL:        www.ai.dist.unige.it/armando    and www.ai.dist.unige.it/compagna
+
+Address:    DIST -- Universita' degli Studi di Genova
+            Viale Causa 13
+            16145 Genova 
+            ITALIA
+
+Contributors: Pierre Ganty
+              Cristina Fra`
+              Jacopo Mantovani
+              Roberto Carbone
+
+Project:      SATMC  - SAT-based Model-Checking of Security Protocols
+
+              AVISPA - Automated Validation of Internet Security Protocols 
+		       and Applications
+
+Project URLs: http://www.ai.dist.unige.it/satmc/
+	      http://www.avispa-project.org/	
+
+Send bug-reports and/or questions to: satmc-support@ai.dist.unige.it
+
+

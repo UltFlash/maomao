@@ -1,0 +1,200 @@
+AVISPA Tool: INSTALL 
+====================
+
+Please review the license restrictions associated with this software
+in the file LICENSE before proceeding further.
+
+This software is being developed as a research tool.  It is still
+under development.  This second release is stable, but we still
+appreciate any and all feedback on it.  We want to know what you think
+of AVISPA, so please subscribe to our mailing list
+avispa-users@avispa-project.org by sending an empty e-mail to
+avispa-users-join@avispa-project.org and let us know.
+
+===========
+0. CONTENTS
+===========
+ 1. Description
+ 2. Installation procedure
+ 3. Files in the AVISPA distribution
+ 4. Platforms
+ 5. Authors and contact
+
+
+==============
+1. DESCRIPTION
+==============
+
+AVISPA is a modular tool comprising a translator from HLPSL to IF and
+a variety of state-of-the-art back-ends for protocol security analysis.
+Currently the AVISPA tool consists of the following modules:
+
+- hlpsl2if : translator from HLPSL to IF;
+- cl-atse  : the Constraint-Logic-based Attack Searcher; and
+- ofmc     : the On-the-Fly Model-Checker;
+- satmc    : the SAT-based Model-Checker;
+- ta4sp    : the Tree Automata tool based on Automatic Approximations 
+             for the Analysis of Security Protocols.
+
+Moreover, some additional packages are provided in order to aid the
+use of the AVISPA Tool:
+- an edition mode for XEmacs;
+- the AVISPA Library of Protocols, specified in HLPSL;
+- scripts for transforming HLPSL specifications into documentation
+  (LaTeX or HTML);
+- a translator of attack traces to messages sequence charts.
+
+Note that a separate package provides the AVISPA tool with a graphical
+interface (written in PHP).
+
+
+=========================
+2. INSTALLATION PROCEDURE
+=========================
+
+AVISPA is distributed already compiled. To install the binary
+distribution of AVISPA follow the instructions below:
+
+1. Download the most recent versions of AVISPA from the addresses
+   listed above into a convenient directory, (e.g., /tmp).
+
+2. Move to the root directory where you want to install AVISPA. Let's
+   say "/opt" and untar the distribution:
+
+        % cd /opt
+	% tar -xzf /tmp/avispa-package-X.Y_Linux-i686.tgz
+
+   This command will create a directory "/opt/avispa-X.Y" containing
+   the AVISPA files (X.Y is the release number).
+
+3. Set the AVISPA_PACKAGE environment variable:
+
+	% export AVISPA_PACKAGE=/opt/avispa-X.Y
+
+4. Add the directory /opt/avispa-X.Y to your command search PATH
+   environment variable:
+
+	% export PATH=$PATH:$AVISPA_PACKAGE
+
+Now you are ready to run and enjoy AVISPA.  Please see the README file
+for information about the command line options of AVISPA. 
+
+
+The AVISPA package provides several contributed packages, such as a
+user-friendly mode for XEmacs to allow a simple interaction between
+the user and the modules of the AVISPA package.  To set-up those
+additonal packages follow the instructions below:
+
+5. Move to the "$AVISPA_PACKAGE/contrib" directory and uncompress the
+   corresponding archive file.  For example:
+
+        % cd $AVISPA_PACKAGE/contrib
+	% tar -xzf avispa-mode.tgz
+
+   This command will create a new directory containing more precise
+   installation instructions.
+
+6. Follow those instructions for completing the installation.
+
+
+===================================
+3. Files in the AVISPA distribution
+===================================
+
+|- avispa            The AVISPA (bash) script.
+|
+|- INSTALL           This file.
+|
+|- README            Description of AVISPA and command line options.
+|
+|- LICENSE           The AVISPA public license.
+|
+|- HELP              Instructions about AVISPA command line options.
+|
+|- docs/             The AVISPA documentation.
+|  |
+|  |- tutorial/*        The AVISPA tutorial. 
+|  |
+|  \- user-manual/*     The AVISPA user manual.
+|
+|- bin/              The AVISPA binaries.
+|  |
+|  |- backends/         The backends. 
+|  |  |
+|  |  |- cl.bash           The cl-atse bash script.
+|  |  |- cl/               The cl-atse backend. 
+|  |  |
+|  |  |- ofmc.bash         The ofmc bash script.
+|  |  |- ofmc/             The ofmc backend. 
+|  |  |  
+|  |  |- satmc.bash        The satmc bash script.
+|  |  |- satmc.config      The satmc configuration file.
+|  |  |- satmc_2.0/        The satmc backend. 
+|  |  |
+|  |  |- ta4sp.bash        The ta4sp bash script.
+|  |  |- ta4sp.config      The ta4sp configuration file.
+|  |  \- TA4SP/            The ta4sp backend.
+|  |
+|  \- translator/       The hlpsl2if translator.
+|
+|- testsuite/        The AVISPA testsuite directory.
+|  |
+|  |- hlpsl/            HLPSL input specifications.
+|  |
+|  \- results/          The directory in which the AVISPA tool will 
+|                       write by default IF, results, and temporary
+|                       files (if any).
+|
+|- logs/             The AVISPA log directory.  
+|
+\- contrib/
+   |
+   |- avispa-mode.tgz   The archive to install the AVISPA mode for Xemacs.
+   |
+   |- hlpsldoc.tgz      The archive to install the HLPSL documentation
+   |                    generators.
+   |
+   \- avispa-library.tgz  The archive containing a lot of HLPSL protocols
+                          specifications
+
+
+============
+4. PLATFORMS
+============
+
+AVISPA is a modular tool and each of its modules has been tested under
+the following different platforms, in each case on the x86
+architecture and using the bash shell:
+
+    * RedHat 8.0, Kernel Version 2.4.18-14
+    * RedHat 9.0, Kernel Version 2.4.20-8
+    * Suse 9.2, Kernel Version 2.6.8-24.11-default
+    * FreeBSD 5.3, Kernel Version 5.3-RELEASE (GENERIC)
+    * Debian 3.1, Kernel Version 2.6.8-1-386
+    * Debian 3.1, Kernel Version 2.4.25-1-386
+
+Should you encounter any difficulty in installing and running AVISPA
+on your machine, please subscribe to our mailing list
+avispa-users@avispa-project.org (see below) and send us a message.
+
+
+======================
+5. AUTHORS and CONTACT
+======================
+
+Written by: AVISPA Team
+
+Project:    AVISPA - Automated Validation of Internet Security 
+		     Protocols and Applications
+
+Project URL:  http://www.avispa-project.org/	
+	               
+
+Subscribe to our mailing list
+
+avispa-users@avispa-project.org
+
+and keep updated on the latest news, tool bug fixes and releases, and
+events related to the AVISPA Project by sending an empty e-mail to
+
+              avispa-users-join@avispa-project.org.

@@ -1,0 +1,18 @@
+ 
+CL-Atse: the Constraint-Logic-based Attack Searcher
+
+Copyright (C) 2001-2006, Loria-INRIA, Institut National de Recherche en Informatique et ses Applications (INRIA), Loria, CASSIS Team, TURUANI Mathieu, Nancy, France.
+
+Author : TURUANI Mathieu.
+Contributors : SANTIAGO Judson, TUENGERTHAL Max.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS, AUTHOR AND CONTRIBUTORS, "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  This software may be used, copied or distributed with this disclaimer for private, teaching or research purposes as long as the names of the author and his institute (Loria-INRIA) are explicitely indicated, but it may not be modified in any way. Moreover, neither the names of CL-Atse, the AVISPA Project or the CASSIS team, nor the names of the author(s) and contributors of CL-Atse and AVISPA may be used to endorse or promote products derived from this software without specific prior written permission.
+  Specific agreements, including but not limited to national or international projects or cooperations, may reduce the previous constraints of use of this software, but cannot extend the responsabilities of the copyright holters, the author and the contributors in any way.
+  For any use of this software different than the ones described above, please contact the author (turuani@loria.fr) or his institute (http://www.loria.fr).
+
+  CE LOGICIEL EST FOURNIS PAR LES TITULAIRES DES DROITS, AUTEURS ET CONTRIBUTEURS, "TEL QUEL" SANS AUCUNE GARANTIE EXPLICITE OR IMPLICITE, NI MEME LES GARANTIES IMPLICITES DE BON FONCTIONNEMENT OU D'ADEQUATION A UN USAGE PARTICULIER. EN AUCUN CAS LES TITULAIRES DES DROITS, AUTEURS ET CONTRIBUTEURS, NE PEUVENT ETRE TENUS RESPONCABLES POUR TOUT DOMMAGE DIRECTE, INDIRECTE, OU D'AUCUNE SORTE COMME PAR EXEMPLE LA PERTE DE DONNEES OU DE PROFITS, CREE, CAUSE OU INDUIS PAR CE LOGICIEL, ET CE MEME PAR NEGLIGENCE OU S'ILS AIENT ETE INFORMES DE LA POSSIBILITE D'UN TEL DOMMAGE.
+  Ce logiciel peut être librement utilisé, copié ou distribué avec cette licence pour un usage privé, d'enseignement ou de recherche, à condition que les noms de l'auteurs et de son institut (Loria-INRIA) soient explicitement indiqués et que le logiciel ne soit pas modifié d'aucune manière. De plus, ni les noms des CL-Atse, du projet européen AVISPA ou de l'équipe CASSIS, ni les noms des auteurs, contributeurs et instituts de CL-Atse et AVISPA ne peuvent être utilisés pour promouvoir des produits totalement ou partiellement dérivés de ce logiciel sans une authorisation écrite préalable.
+  Des accords spécifiques, notement dans le cadre de projets et coopérations nationaux ou internationaux, peuvent réduire les contraintes d'utilisations décrites ci-dessus, mais ne peuvent en aucun cas étendre les responçabilités des titulaires des droits, auteurs et contributeurs.
+  Pour toute autre utilisation que celles décrites ci dessus, veuillez contacter l'auteur de ce logiciel (turuani@loria.fr) ou son institut (http://www.loria.fr).
+
